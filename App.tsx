@@ -4,57 +4,16 @@
  */
 
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { Provider } from 'react-redux';
+import { store } from './src/store';
+import AppNavigator from './src/core/navigation/AppNavigator';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Rapid Response Central</Text>
-      <Text style={styles.subtitle}>React Native Web - Emergency Protocols</Text>
-      <View style={styles.card}>
-        <Text style={styles.cardText}>✅ React Native is working!</Text>
-        <Text style={styles.cardText}>🏥 Emergency protocols loading...</Text>
-        <Text style={styles.cardText}>📱 Cross-platform deployment successful</Text>
-      </View>
-    </View>
+    <Provider store={store}>
+      <StatusBar style="auto" />
+      <AppNavigator />
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#DC2626',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: 18,
-    color: '#666',
-    marginBottom: 30,
-    textAlign: 'center',
-  },
-  card: {
-    backgroundColor: '#fff',
-    padding: 20,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-    minWidth: 300,
-  },
-  cardText: {
-    fontSize: 16,
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-});
