@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0; }
+        .test { background: white; padding: 20px; margin: 10px 0; border-radius: 8px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>React Native Web Debug Test</h1>
+    
+    <div class="test">
+        <h2>Step 1: Basic HTML</h2>
+        <p>✅ HTML is loading correctly</p>
+    </div>
+    
+    <div class="test" id="js-test">
+        <h2>Step 2: JavaScript Execution</h2>
+        <p>❌ JavaScript not yet executed</p>
+    </div>
+    
+    <div class="test" id="bundle-test">
+        <h2>Step 3: React Native Bundle</h2>
+        <p>🔄 Testing bundle load...</p>
+    </div>
+    
+    <div class="test">
+        <h2>Console Output</h2>
+        <div id="console-output">No console messages yet...</div>
+    </div>
+    
+    <script>
+        // Test 1: Basic JavaScript
+        document.getElementById('js-test').innerHTML = '<h2>Step 2: JavaScript Execution</h2><p class="success">✅ JavaScript is working!</p>';
+        
+        // Test 2: Console capture
+        const originalLog = console.log;
+        const originalError = console.error;
+        let consoleMessages = [];
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            consoleMessages.push('LOG: ' + args.join(' '));
+            updateConsole();
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            consoleMessages.push('ERROR: ' + args.join(' '));
+            updateConsole();
+        };
+        
+        function updateConsole() {
+            document.getElementById('console-output').innerHTML = consoleMessages.map(msg => '<div>' + msg + '</div>').join('');
+        }
+        
+        // Test 3: Try to load React Native bundle
+        console.log('Testing React Native bundle load...');
+        
+        const script = document.createElement('script');
+        script.src = '/_expo/static/js/web/index-c4e22d06018506b2ef7225cec295d397.js';
+        script.onload = function() {
+            document.getElementById('bundle-test').innerHTML = '<h2>Step 3: React Native Bundle</h2><p class="success">✅ Bundle loaded successfully!</p>';
+            console.log('React Native bundle loaded successfully!');
+        };
+        script.onerror = function(error) {
+            document.getElementById('bundle-test').innerHTML = '<h2>Step 3: React Native Bundle</h2><p class="error">❌ Bundle failed to load</p>';
+            console.error('Failed to load React Native bundle:', error);
+        };
+        
+        document.head.appendChild(script);
+        
+        // Test 4: Check if React Native initialized
+        setTimeout(function() {
+            const root = document.getElementById('root');
+            if (root && root.children.length > 0) {
+                console.log('React Native app has mounted!');
+            } else {
+                console.log('React Native app has not mounted after 5 seconds');
+            }
+        }, 5000);
+        
+        console.log('Debug test initialized');
+    </script>
+</body>
+</html>

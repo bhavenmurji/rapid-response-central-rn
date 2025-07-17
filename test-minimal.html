@@ -1,54 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Test React Native Web</title>
+    <title>RN Web Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body { margin: 0; padding: 20px; font-family: Arial; }
-        #test-content { background: #f0f0f0; padding: 20px; margin: 10px 0; }
-        #root { min-height: 200px; border: 2px solid #333; background: #fff; }
+        .test { padding: 20px; background: #f0f0f0; margin: 10px 0; }
     </style>
 </head>
 <body>
-    <h1>React Native Web Test</h1>
-    <div id="test-content">
-        <h2>Static HTML is loading</h2>
-        <p>If you see this, the HTML is working correctly.</p>
-        <p>The React Native app should load below:</p>
-    </div>
-    
-    <div id="root">
-        <div style="padding: 20px; color: #666;">
-            Loading React Native app...
+    <div class="test">
+        <h1>Testing React Native Web Deployment</h1>
+        <p>Expected: "Rapid Response Central" title with status messages</p>
+        <p>Actual deployment: <a href="https://rapid-response-rn.vercel.app" target="_blank">https://rapid-response-rn.vercel.app</a></p>
+        
+        <h2>Debug Information:</h2>
+        <ul>
+            <li>Bundle file: <code>/_expo/static/js/web/index-c4e22d06018506b2ef7225cec295d397.js</code></li>
+            <li>Entry point: <code>index.ts</code> → <code>App.tsx</code></li>
+            <li>Framework: Expo + React Native Web</li>
+        </ul>
+        
+        <h2>What should appear:</h2>
+        <div style="border: 1px solid #ccc; padding: 15px; margin: 10px 0;">
+            <h1 style="color: #DC2626; font-size: 32px; text-align: center;">Rapid Response Central</h1>
+            <p style="color: #666; font-size: 18px; text-align: center;">React Native Web - Emergency Protocols</p>
+            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <p style="text-align: center;">✅ React Native is working!</p>
+                <p style="text-align: center;">🏥 Emergency protocols loading...</p>
+                <p style="text-align: center;">📱 Cross-platform deployment successful</p>
+            </div>
         </div>
     </div>
-    
-    <script>
-        // Basic error logging
-        window.addEventListener('error', function(e) {
-            console.error('Error:', e.error);
-            document.body.insertAdjacentHTML('beforeend', 
-                '<div style="background: red; color: white; padding: 10px; margin: 10px 0;">Error: ' + e.error.message + '</div>'
-            );
-        });
-        
-        // Check if React Native bundle loads
-        console.log('Loading React Native bundle...');
-    </script>
-    
-    <!-- Load the React Native bundle -->
-    <script src="/_expo/static/js/web/index-76bb2294a3cb74767e0e3843051db17b.js" defer></script>
-    
-    <script>
-        // Check if app mounted after 3 seconds
-        setTimeout(function() {
-            var root = document.getElementById('root');
-            if (root && root.children.length <= 1) {
-                document.body.insertAdjacentHTML('beforeend', 
-                    '<div style="background: orange; color: black; padding: 10px; margin: 10px 0;">Warning: React app may not have mounted properly. Check console for errors.</div>'
-                );
-            }
-        }, 3000);
-    </script>
 </body>
 </html>
