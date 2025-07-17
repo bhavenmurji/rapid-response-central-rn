@@ -1,6 +1,6 @@
 /**
- * Rapid Response Central - React Native App
- * Emergency medical protocols for Virtua Voorhees Family Medicine
+ * Simple Test App - React Native
+ * Minimal version to test web deployment
  */
 
 import React from 'react';
@@ -10,11 +10,10 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Rapid Response Central</Text>
-      <Text style={styles.subtitle}>React Native Web - Emergency Protocols</Text>
+      <Text style={styles.subtitle}>React Native Web Test</Text>
       <View style={styles.card}>
         <Text style={styles.cardText}>✅ React Native is working!</Text>
-        <Text style={styles.cardText}>🏥 Emergency protocols loading...</Text>
-        <Text style={styles.cardText}>📱 Cross-platform deployment successful</Text>
+        <Text style={styles.cardText}>Emergency protocols loading...</Text>
       </View>
     </View>
   );
@@ -33,13 +32,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#DC2626',
     marginBottom: 10,
-    textAlign: 'center',
   },
   subtitle: {
     fontSize: 18,
     color: '#666',
     marginBottom: 30,
-    textAlign: 'center',
   },
   card: {
     backgroundColor: '#fff',
@@ -50,7 +47,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-    minWidth: 300,
   },
   cardText: {
     fontSize: 16,
