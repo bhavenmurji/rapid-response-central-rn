@@ -4,7 +4,7 @@
  * Converted from Flutter original
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -14,6 +14,14 @@ import {
   StatusBar,
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { 
+  activateEmergency, 
+  startTimer, 
+  incrementCPRCycles,
+  updateEmergencyActions 
+} from '../../../store/slices/emergencySlice';
+import { addRecentProtocol } from '../../../store/slices/settingsSlice';
 
 import { EmergencyColors, EmergencyStyles, EmergencyTypography, EmergencySpacing } from '../../../core/theme/EmergencyDesignSystem';
 import { 
@@ -35,20 +43,66 @@ const protocolTabs = [
 
 export default function CodeBlueScreen() {
   const [activeTab, setActiveTab] = useState('plan'); // Start with Plan for immediate action
-  const [timerRunning, setTimerRunning] = useState(false);
-  const [cprCycles, setCprCycles] = useState(0);
+  const dispatch = useAppDispatch();
+  
+  // Get emergency state from Redux
+  const activeEmergencies = useAppSelector(state => state.emergency.activeEmergencies);
+  const activeTimers = useAppSelector(state => state.emergency.activeTimers);
+  
+  // Find current code blue emergency and timer
+  const currentEmergency = activeEmergencies.find(e => e.type === 'code_blue' && e.status === 'active');
+  const codeBlueTimer = Object.values(activeTimers).find(t => t.type === 'code_blue' && t.isRunning);
+  
+  useEffect(() => {
+    // Add to recent protocols when screen is opened
+    dispatch(addRecentProtocol('code_blue'));
+  }, [dispatch]);
 
   // Emergency actions
   const handleStartCPR = () => {
-    setTimerRunning(true);
-    setCprCycles(cprCycles + 1);
+    if (!codeBlueTimer) {
+      dispatch(startTimer({ type: 'cpr' }));
+    } else {
+      dispatch(incrementCPRCycles(codeBlueTimer.id));
+    }
+    
+    if (!currentEmergency) {
+      dispatch(activateEmergency({
+        type: 'code_blue',
+        criticalActions: [
+          'Call Code Blue',
+          'Start CPR',
+          'Get Crash Cart/AED',
+          'Secure Airway',
+          'IV Access',
+          'Epinephrine 1mg',
+        ],
+      }));
+    } else {
+      dispatch(updateEmergencyActions({
+        emergencyId: currentEmergency.id,
+        completedAction: 'Start CPR',
+      }));
+    }
   };
 
   const handleCallCode = () => {
+    if (currentEmergency) {
+      dispatch(updateEmergencyActions({
+        emergencyId: currentEmergency.id,
+        completedAction: 'Call Code Blue',
+      }));
+    }
     console.log('Calling Code Blue team');
   };
 
   const handleGetCrashCart = () => {
+    if (currentEmergency) {
+      dispatch(updateEmergencyActions({
+        emergencyId: currentEmergency.id,
+        completedAction: 'Get Crash Cart/AED',
+      }));
+    }
     console.log('Getting crash cart');
   };
 
@@ -129,11 +183,11 @@ export default function CodeBlueScreen() {
         <Text style={styles.timerLabel}>Code Blue Timer</Text>
         <EmergencyTimer
           initialTime={0}
-          isRunning={timerRunning}
+          isRunning={codeBlueTimer?.isRunning || false}
           size="large"
           showMilliseconds={false}
         />
-        <Text style={styles.cycleCounter}>CPR Cycles: {cprCycles}</Text>
+        <Text style={styles.cycleCounter}>CPR Cycles: {codeBlueTimer?.cycles || 0}</Text>
       </View>
 
       {/* Critical Actions */}

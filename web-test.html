@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>React Native Web Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { margin: 0; padding: 20px; font-family: Arial; }
+        .status { padding: 20px; background: #f0f0f0; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>React Native Web Debug</h1>
+    <div class="status">
+        <h2>Checking deployment...</h2>
+        <p>Bundle location: <code>/_expo/static/js/web/index-76bb2294a3cb74767e0e3843051db17b.js</code></p>
+        <p>If you see errors in the console, the app bundle may not be loading correctly.</p>
+    </div>
+    
+    <script>
+        // Test if the bundle exists
+        fetch('/_expo/static/js/web/index-76bb2294a3cb74767e0e3843051db17b.js')
+            .then(response => {
+                console.log('Bundle response:', response.status);
+                if (!response.ok) {
+                    console.error('Bundle not found!');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching bundle:', error);
+            });
+    </script>
+</body>
+</html>

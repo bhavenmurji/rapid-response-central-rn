@@ -19,6 +19,9 @@ import LabsScreen from '../../features/labs/screens/LabsScreen';
 import CalcScreen from '../../features/calc/screens/CalcScreen';
 import StudyScreen from '../../features/study/screens/StudyScreen';
 
+// Calculator screens
+import WellsScoreScreen from '../../features/calculators/screens/WellsScoreScreen';
+
 // Stack navigators for each tab
 const CodesStack = createStackNavigator();
 const RRTsStack = createStackNavigator();
@@ -92,6 +95,16 @@ export type CallsStackParamList = {
   JointPain: undefined;
   Fractures: undefined;
   SoftTissueInjury: undefined;
+};
+
+export type CalcStackParamList = {
+  CalcHome: undefined;
+  WellsScore: undefined;
+  MDRDGFR: undefined;
+  PSIPort: undefined;
+  ABCD2: undefined;
+  CHADS2VASc: undefined;
+  HASBLED: undefined;
 };
 
 // Stack Navigators
@@ -221,6 +234,14 @@ function CalcNavigator() {
         component={CalcScreen}
         options={{ 
           title: 'Medical Calculators',
+          headerShown: false,
+        }}
+      />
+      <CalcStack.Screen 
+        name="WellsScore" 
+        component={WellsScoreScreen}
+        options={{ 
+          title: "Wells' Criteria for PE",
           headerShown: false,
         }}
       />
